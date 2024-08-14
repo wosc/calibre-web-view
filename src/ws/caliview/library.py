@@ -1,5 +1,5 @@
 from pyramid.view import view_config
-from sqlalchemy import text as sql
+from sqlalchemy import create_engine, text as sql
 
 # Adapted from `CREATE VIEW meta` provided by Calibre,
 # retrieve schema via `SELECT sql FROM sqlite_master`
@@ -23,5 +23,7 @@ def list(request):
     where = request.GET.get('q', '')
     if where:
         where = ' where ' + where
-    with request.registry.engine.connect() as con:
+    engine = create_engine(request.registry.settings['sqlalchemy.url']
+                           + '?immutable=1')
+    with engine.connect() as con:
         return {'rows': con.execute(sql(query + where + order)).fetchall()}

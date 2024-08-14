@@ -1,6 +1,5 @@
 import pyramid_jinja2
 import pyramid.config
-import sqlalchemy
 
 
 class Application:
@@ -10,7 +9,7 @@ class Application:
 
     def configure_pyramid(self, conf):
         c = self.config = pyramid.config.Configurator()
-        c.registry.engine = sqlalchemy.create_engine(conf['sqlalchemy.url'])
+        c.registry.settings.update(**conf)
         self.configure_jinja()
 
         c.add_route('home', '/')
