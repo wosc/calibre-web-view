@@ -1,0 +1,42 @@
+{% set page_title = "Books" %}
+{% extends "layout.html" %}
+
+{% block body %}
+<section class="section"><div class="container">
+<h1 class="title is-3">Books</h1>
+
+<p>
+    <a class="button" href="{{request.route_url('home')}}">all</a>
+    <a class="button" href="{{request.route_url('home')}}?q=tags.name='to-read'">to-read</a>
+    <a class="button" href="{{request.route_url('home')}}?q=ratings.rating/2>=3">rating>=3</a>
+</p>
+
+<div class="table-container">
+<table class="table is-fullwidth is-striped is-hoverable">
+<thead>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Series</th>
+    <th>Number</th>
+    <th>Rating</th>
+    <th>Tags</th>
+</thead>
+
+<tbody>
+{% for row in rows -%}
+    <tr>
+        <td>{{row.title}}</td>
+        <td>{{row.author}}</td>
+        <td>{{row.series}}</td>
+        <td>{{'%s' | format(row.number or '') | replace('.0', '')}}</td>
+        <td>{{row.rating or ''}}</td>
+        <td>{{row.tags or ''}}</td>
+    </tr>
+{% endfor %}
+</tbody>
+
+</table>
+</div>
+
+</div></section>
+{% endblock %}
